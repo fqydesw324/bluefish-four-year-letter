@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>密码保护 · 想对你说的话</title>
+<style>
+:root{
+  --night:#102820;
+  --night-soft:#19392f;
+  --paper:#f4efe4;
+  --ink:#20332b;
+  --muted:#6b756f;
+  --gold:#c9a56a;
+  --sky:#7dc8f2;
+  --blue:#376da7;
+  --pink:#e7a1a4;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  margin:0;
+  color:var(--paper);
+  background:
+    radial-gradient(circle at 16% 18%, rgba(92,154,219,.28), transparent 30rem),
+    radial-gradient(circle at 86% 16%, rgba(190,131,184,.15), transparent 22rem),
+    radial-gradient(circle at 80% 84%, rgba(201,165,106,.13), transparent 28rem),
+    repeating-linear-gradient(115deg, transparent 0 25px, rgba(157,211,242,.025) 26px),
+    var(--night);
+  font-family:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong",serif;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(115deg, transparent 0 48%, rgba(255,255,255,.025) 49%, transparent 50%);
+  background-size:22px 22px;
+  opacity:.5;
+}
+body::after{
+  content:"Ciallo～  ·  没吃饱喵  ·  0856";
+  position:fixed;
+  z-index:0;
+  right:-98px;
+  bottom:7vh;
+  color:rgba(160,214,244,.055);
+  font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+  font-size:clamp(52px,9vw,104px);
+  font-weight:700;
+  letter-spacing:.08em;
+  writing-mode:vertical-rl;
+  pointer-events:none;
+  animation:ambient-float 12s ease-in-out infinite alternate;
+}
+main{
+  position:relative;
+  z-index:1;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:clamp(24px, 7vw, 80px) 18px;
+}
+.note{
+  width:min(760px, 100%);
+  padding:clamp(34px, 7vw, 76px) clamp(25px, 8vw, 82px);
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 90% 7%, rgba(126,193,237,.17), transparent 12rem),
+    radial-gradient(circle at 12% 94%, rgba(234,176,151,.1), transparent 14rem),
+    linear-gradient(135deg, rgba(255,255,255,.55), transparent 34%),
+    repeating-radial-gradient(circle at 12px 12px, rgba(56,103,151,.035) 0 1px, transparent 1.5px 12px),
+    var(--paper);
+  border-radius:2px;
+  box-shadow:0 36px 100px rgba(0,0,0,.36);
+  position:relative;
+  overflow:hidden;
+  animation:note-arrive .8s cubic-bezier(.2,.7,.2,1) both;
+}
+.note::before{
+  content:"”";
+  position:absolute;
+  top:-42px;
+  right:18px;
+  color:rgba(32,51,43,.08);
+  font-family:Georgia,serif;
+  font-size:230px;
+  line-height:1;
+}
+.note::after{
+  content:"";
+  position:absolute;
+  top:16px;
+  left:-28px;
+  width:112px;
+  height:26px;
+  background:rgba(243,207,126,.58);
+  transform:rotate(-35deg);
+  box-shadow:0 2px 7px rgba(54,58,45,.08);
+}
+.message-tags{
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:-23px 0 23px;
+}
+.message-tags span{
+  padding:4px 9px;
+  color:#315a82;
+  background:rgba(218,237,251,.7);
+  border:1px solid rgba(51,104,155,.18);
+  border-radius:999px;
+  font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+  font-size:9px;
+  letter-spacing:.08em;
+}
+.message-tags span:nth-child(2){color:#88505a;background:rgba(250,228,230,.72);border-color:rgba(154,84,93,.16)}
+.message-tags span:nth-child(3){color:#796026;background:rgba(250,239,205,.78);border-color:rgba(157,120,52,.16)}
+.topline{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:48px;
+  padding-bottom:15px;
+  border-bottom:1px solid rgba(32,51,43,.16);
+  color:var(--muted);
+  font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+  font-size:11px;
+  letter-spacing:.18em;
+}
+h1{
+  margin:0 0 32px;
+  color:var(--night-soft);
+  font-size:clamp(25px, 5vw, 38px);
+  font-weight:500;
+  letter-spacing:.08em;
+}
+.mascot-portrait{
+  position:relative;
+  width:min(570px,100%);
+  min-height:300px;
+  margin:-8px auto 36px;
+  display:grid;
+  place-items:center;
+}
+.mascot-portrait::before{
+  content:"";
+  position:absolute;
+  width:min(330px,76vw);
+  aspect-ratio:1;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 42% 38%, rgba(125,218,196,.34), rgba(54,137,117,.13) 48%, transparent 72%);
+  animation:portrait-halo 5s ease-in-out infinite;
+}
+.mascot-portrait > img{
+  position:relative;
+  z-index:2;
+  display:block;
+  width:min(100%,410px);
+  height:auto;
+  filter:drop-shadow(0 22px 24px rgba(30,77,64,.17));
+  animation:portrait-swim 4.8s ease-in-out infinite;
+}
+.portrait-stamp{
+  position:absolute;
+  z-index:3;
+  right:5%;
+  bottom:7%;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:5px 10px 5px 5px;
+  border:1px solid rgba(32,51,43,.16);
+  border-radius:999px;
+  background:rgba(244,239,228,.85);
+  color:#355348;
+  font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+  font-size:9px;
+  letter-spacing:.07em;
+  box-shadow:0 6px 16px rgba(32,51,43,.1);
+}
+.portrait-stamp img{
+  width:23px;
+  height:23px;
+  border-radius:50%;
+}
+.portrait-note{
+  position:absolute;
+  z-index:3;
+  left:2%;
+  bottom:5%;
+  padding:9px 14px;
+  color:#173f34;
+  background:#f1c76e;
+  border:2px solid #173f34;
+  border-radius:999px 999px 4px 999px;
+  box-shadow:4px 5px 0 rgba(23,63,52,.12);
+  font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+  font-size:11px;
+  font-weight:600;
+  transform:rotate(-4deg);
+  animation:sticker-note 3.8s ease-in-out infinite;
+}
+.water-bubble{
+  position:absolute;
+  z-index:1;
+  bottom:20%;
+  width:10px;
+  height:10px;
+  border:1px solid rgba(50,128,109,.42);
+  border-radius:50%;
+  animation:bubble-rise 5s ease-in infinite;
+}
+.water-bubble:nth-of-type(1){left:17%;animation-delay:.2s}
+.water-bubble:nth-of-type(2){left:24%;width:7px;height:7px;animation-delay:1.6s;animation-duration:6s}
+.water-bubble:nth-of-type(3){right:22%;width:12px;height:12px;animation-delay:2.7s;animation-duration:5.6s}
+.water-bubble:nth-of-type(4){right:31%;width:6px;height:6px;animation-delay:.9s;animation-duration:4.8s}
+.body{
+  position:relative;
+  font-size:clamp(16px, 2.2vw, 18px);
+  line-height:2.05;
+}
+.body p{
+  margin:0 0 1.3em;
+  animation:copy-appear .7s ease-out both;
+}
+.body p:nth-of-type(2){animation-delay:.08s}
+.body p:nth-of-type(3){animation-delay:.15s}
+.body p:nth-of-type(4){animation-delay:.22s}
+.body p:nth-of-type(5){animation-delay:.29s}
+.body p:nth-of-type(6){animation-delay:.36s}
+.lead{
+  font-size:1.08em;
+  color:#19392f;
+}
+.body strong{
+  color:#1f5543;
+  font-weight:600;
+}
+.last{
+  margin-top:2em !important;
+  padding-top:25px;
+  border-top:1px solid rgba(32,51,43,.16);
+  color:#425049;
+}
+.signature{
+  margin-top:36px;
+  text-align:right;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.8;
+}
+.back{
+  display:inline-block;
+  margin-top:38px;
+  color:#315d4d;
+  font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+  font-size:13px;
+  text-decoration:none;
+  border-bottom:1px solid rgba(49,93,77,.35);
+}
+.back:hover,.back:focus-visible{color:#102820;border-color:#102820}
+@keyframes note-arrive{
+  from{opacity:0;transform:translateY(18px) scale(.99)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes copy-appear{
+  from{opacity:0;transform:translateY(9px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes portrait-swim{
+  0%,100%{transform:translateY(0) rotate(-.6deg)}
+  50%{transform:translateY(-12px) rotate(.6deg)}
+}
+@keyframes portrait-halo{
+  0%,100%{transform:scale(.94);opacity:.7}
+  50%{transform:scale(1.06);opacity:1}
+}
+@keyframes bubble-rise{
+  0%{transform:translateY(20px) scale(.8);opacity:0}
+  18%{opacity:.65}
+  80%{opacity:.3}
+  100%{transform:translateY(-190px) scale(1.15);opacity:0}
+}
+@keyframes sticker-note{
+  0%,100%{transform:rotate(-4deg) translateY(0)}
+  50%{transform:rotate(-2deg) translateY(-4px)}
+}
+@keyframes ambient-float{
+  from{transform:translate3d(0,-8px,0)}
+  to{transform:translate3d(-12px,18px,0)}
+}
+@media (max-width:560px){
+  .note{padding:34px 23px 42px}
+  .topline{line-height:1.6;flex-direction:column;gap:5px}
+  .body{text-align:left}
+  .mascot-portrait{min-height:250px;margin-top:-14px}
+  .portrait-stamp{right:0;bottom:2%}
+  .portrait-note{left:0;bottom:0;font-size:10px}
+}
+@media print{
+  :root{--night:#fff}
+  body{background:#fff}
+  body::before{display:none}
+  main{display:block;min-height:0;padding:0}
+  .note{width:100%;box-shadow:none;padding:24mm}
+  .back{display:none}
+  .mascot-portrait{display:none}
+  .note,.body p{animation:none}
+  @page{margin:0;size:A4}
+}
+@media (prefers-reduced-motion:reduce){
+  body::after,.note,.body p,.mascot-portrait::before,.mascot-portrait > img,.portrait-note,.water-bubble{
+    animation:none !important;
+  }
+}
+</style>
+<style id="encrypted-page-gate-style">
+  #private-content[hidden]{display:none!important}
+  body.is-locked{
+    min-height:100vh;
+    overflow:auto;
+    background:
+      radial-gradient(circle at 18% 16%, rgba(95,206,183,.18), transparent 26rem),
+      radial-gradient(circle at 86% 82%, rgba(227,183,112,.12), transparent 24rem),
+      #0f2922;
+    color:#f4efe4;
+  }
+  body.is-locked::before{opacity:.12}
+  .unlock-shell{
+    position:relative;
+    z-index:2;
+    width:min(880px,calc(100% - 30px));
+    min-height:100vh;
+    margin:auto;
+    padding:clamp(28px,6vw,72px) 0;
+    display:grid;
+    grid-template-columns:minmax(210px,.8fr) minmax(280px,1.2fr);
+    align-items:center;
+    gap:clamp(20px,5vw,58px);
+  }
+  .unlock-art{
+    position:relative;
+    display:grid;
+    place-items:center;
+  }
+  .unlock-art::before{
+    content:"";
+    position:absolute;
+    width:90%;
+    aspect-ratio:1;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(106,215,190,.22),transparent 68%);
+    animation:lock-halo 4.8s ease-in-out infinite;
+  }
+  .unlock-art img{
+    position:relative;
+    width:min(100%,280px);
+    height:auto;
+    border-radius:30px 8px 30px 8px;
+    box-shadow:0 22px 60px rgba(0,0,0,.3);
+    animation:lock-fish 4.4s ease-in-out infinite;
+  }
+  .unlock-card{
+    padding:clamp(28px,5vw,52px);
+    color:#20332b;
+    background:#f4efe4;
+    border-radius:4px 26px 4px 26px;
+    box-shadow:0 28px 80px rgba(0,0,0,.35);
+  }
+  .unlock-kicker{
+    display:block;
+    margin-bottom:13px;
+    color:#668275;
+    font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+    font-size:10px;
+    letter-spacing:.2em;
+  }
+  .unlock-card h1{
+    margin:0 0 13px;
+    color:#173f34;
+    font-family:"Noto Serif SC","Songti SC","STSong",serif;
+    font-size:clamp(26px,5vw,38px);
+    line-height:1.3;
+    letter-spacing:.04em;
+  }
+  .unlock-card p{
+    margin:0 0 24px;
+    color:#66736c;
+    font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+    font-size:13px;
+    line-height:1.8;
+  }
+  .unlock-form{display:grid;gap:12px}
+  .unlock-form label{
+    color:#41584e;
+    font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+    font-size:12px;
+  }
+  .unlock-row{display:flex;gap:9px}
+  .unlock-form input{
+    min-width:0;
+    flex:1;
+    padding:12px 13px;
+    color:#173f34;
+    background:#fffaf0;
+    border:1px solid #b7c9bf;
+    border-radius:9px;
+    font:15px "Microsoft YaHei","PingFang SC",sans-serif;
+    outline:none;
+  }
+  .unlock-form input:focus{
+    border-color:#28755f;
+    box-shadow:0 0 0 3px rgba(40,117,95,.12);
+  }
+  .unlock-form button{
+    padding:11px 20px;
+    color:#fff;
+    background:#1f6654;
+    border:0;
+    border-radius:9px;
+    font:600 14px "Microsoft YaHei","PingFang SC",sans-serif;
+    cursor:pointer;
+    transition:background .2s,transform .2s;
+  }
+  .unlock-form button:hover,.unlock-form button:focus-visible{
+    background:#164d40;
+    transform:translateY(-1px);
+    outline:none;
+  }
+  .unlock-form button:disabled{opacity:.65;cursor:wait;transform:none}
+  .unlock-status{
+    min-height:1.6em;
+    color:#a04a3c;
+    font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+    font-size:12px;
+  }
+  .unlock-note{
+    margin-top:18px!important;
+    padding-top:14px;
+    border-top:1px solid #d9d2c3;
+    font-size:10px!important;
+    color:#7a847f!important;
+  }
+  @keyframes lock-fish{
+    0%,100%{transform:translateY(0) rotate(-.6deg)}
+    50%{transform:translateY(-10px) rotate(.6deg)}
+  }
+  @keyframes lock-halo{
+    0%,100%{transform:scale(.94);opacity:.7}
+    50%{transform:scale(1.05);opacity:1}
+  }
+  @media(max-width:700px){
+    .unlock-shell{grid-template-columns:1fr;gap:20px;padding:24px 0}
+    .unlock-art img{width:min(64vw,220px)}
+    .unlock-row{flex-direction:column}
+    .unlock-form button{width:100%}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .unlock-art::before,.unlock-art img{animation:none}
+  }
+</style></head>
+<body class="is-locked">
+  <section class="unlock-shell" aria-labelledby="unlock-title">
+    <div class="unlock-art" aria-hidden="true">
+      <img src="./assets/blue-fat-fish.jpg" alt="">
+    </div>
+    <div class="unlock-card">
+      <span class="unlock-kicker">PRIVATE LETTER · 2026</span>
+      <h1 id="unlock-title">这里有一封只给你的信</h1>
+      <p>这封信只在本地浏览器中解密。输入密码后才能阅读正文。</p>
+      <form class="unlock-form" id="unlock-form">
+        <label for="letter-password">信件密码</label>
+        <div class="unlock-row">
+          <input id="letter-password" name="password" type="password" autocomplete="current-password" required autofocus>
+          <button id="unlock-button" type="submit">解开这封信</button>
+        </div>
+        <div class="unlock-status" id="unlock-status" role="status" aria-live="polite"></div>
+      </form>
+      <p class="unlock-note">密码不会被写入页面或发送到网络。正文采用 AES-256-GCM 加密，密码通过 PBKDF2 在浏览器本地派生密钥。</p>
+    </div>
+  </section>
+  <div id="private-content" hidden></div>
+  <noscript><p style="position:relative;z-index:3;text-align:center">需要启用 JavaScript 才能解锁这封信。</p></noscript>
+  <script>
+    (() => {
+      const payload = {"salt":"WINrhYX6kuNn87JF2Quusg==","iv":"xX+t3XRZ0XlQXWHY","data":"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","iterations":310000};
+      const form = document.getElementById("unlock-form");
+      const input = document.getElementById("letter-password");
+      const button = document.getElementById("unlock-button");
+      const status = document.getElementById("unlock-status");
+      const content = document.getElementById("private-content");
+      const decode = (value) => Uint8Array.from(atob(value), c => c.charCodeAt(0));
+
+      async function deriveKey(password, salt) {
+        const material = await crypto.subtle.importKey(
+          "raw",
+          new TextEncoder().encode(password.normalize("NFC")),
+          "PBKDF2",
+          false,
+          ["deriveKey"]
+        );
+        return crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt, iterations: payload.iterations, hash: "SHA-256" },
+          material,
+          { name: "AES-GCM", length: 256 },
+          false,
+          ["decrypt"]
+        );
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        status.textContent = "";
+        button.disabled = true;
+        button.textContent = "正在解密…";
+        try {
+          if (!globalThis.crypto?.subtle) {
+            throw new Error("当前浏览器不支持本地解密，请改用新版 Edge 或 Chrome。");
+          }
+          const key = await deriveKey(input.value, decode(payload.salt));
+          const plaintext = await crypto.subtle.decrypt(
+            { name: "AES-GCM", iv: decode(payload.iv), tagLength: 128 },
+            key,
+            decode(payload.data)
+          );
+          content.innerHTML = new TextDecoder().decode(plaintext);
+          content.hidden = false;
+          document.querySelector(".unlock-shell").remove();
+          document.body.classList.remove("is-locked");
+          window.scrollTo(0, 0);
+        } catch (error) {
+          status.textContent = "密码不正确，或当前浏览器无法解密。请重试。";
+          input.select();
+          button.disabled = false;
+          button.textContent = "解开这封信";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
